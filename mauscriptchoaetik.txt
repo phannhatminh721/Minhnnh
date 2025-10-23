@@ -1,92 +1,34 @@
--- ✅ MẪU CHUẨN CHO NGƯỜI MỚI | TÉO HUB 🍎
--- Giữ nguyên giao diện thật, chỉ thêm hướng dẫn 👈 ngay bên cạnh dòng cần sửa
+-- Local Fly Script (Educational Use Only)
 
-repeat task.wait() until game:IsLoaded()
+local UserInputService = game:GetService("UserInputService")
+local Players = game:GetService("Players")
 
--- 🟢 Nút mở menu chính
-local ScreenGui = Instance.new("ScreenGui")
-local ImageButton = Instance.new("ImageButton")
-local UICorner = Instance.new("UICorner")
+local player = Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
 
-ScreenGui.Parent = game.CoreGui
-ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+local flying = false
+local speed = 50
 
-ImageButton.Parent = ScreenGui
-ImageButton.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-ImageButton.BorderSizePixel = 0
-ImageButton.Position = UDim2.new(0.10615778, 0, 0.16217947, 0)
-ImageButton.Size = UDim2.new(0, 40, 0, 40)
-ImageButton.Draggable = true
-ImageButton.Image = "http://www.roblox.com/asset/?id=136143484274094"  -- 👈 đổi ID ảnh nút mở menu tại đây (ảnh roblox)
+function Fly()
+	flying = true
+	while flying do
+		humanoidRootPart.Velocity = humanoidRootPart.CFrame.LookVector * speed
+		task.wait()
+	end
+end
 
-UICorner.CornerRadius = UDim.new(1, 10)
-UICorner.Parent = ImageButton
+function StopFly()
+	flying = false
+	humanoidRootPart.Velocity = Vector3.new(0,0,0)
+end
 
-ImageButton.MouseButton1Down:Connect(function()
-	game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.End, false, game)
+UserInputService.InputBegan:Connect(function(input)
+	if input.KeyCode == Enum.KeyCode.F then
+		if flying then
+			StopFly()
+		else
+			Fly()
+		end
+	end
 end)
-
--- 🟣 Giao diện Fluent
-local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
-repeat wait() until game:IsLoaded()
-
--- 🪟 Cửa sổ chính
-local Window = Fluent:CreateWindow({
-	Title = "Lại bảo anh Minh mạnh thí🤓🤓 =}",         -- 👈 đổi thành tên script của bạn
-	SubTitle = "sì ke🤫",              -- 👈 đổi mô tả phụ
-	TabWidth = 157,
-	Size = UDim2.fromOffset(450, 300),
-	Acrylic = true,
-	Theme = "Dark",                   -- 👈 đổi màu chủ đạo: Amethyst, Dark, Aqua, Light,...
-	MinimizeKey = Enum.KeyCode.End
-})
-
--- 📑 Các tab (mục chính)
-local Tabs = {
-	Main0 = Window:AddTab({ Title = "Banana Hub" }),  -- 👈 đổi tên tab 1
-	Main1 = Window:AddTab({ Title = "Redz Hub" }),  -- 👈 đổi tên tab 2
-	Main2 = Window:AddTab({ Title = "Dat Thg" }),     -- 👈 đổi tên tab 3
-	Main3 = Window:AddTab({ Title = "Doraemon" }),        -- 👈 đổi tên tab 4
-
-------------------------------------------------
--- TAB 1: Các kênh tiktok
-------------------------------------------------
-Tabs.Main0:AddButton({
-	Title = "tiktok bạn:)",Bánh pocky🫢-- 👈 tên nút
-	Description = "Phannhatminh980",-- 👈 
-
-Tabs.Main1:AddButton({
-	Title = "Redz Hub",
-	Description = "Nhìn cc💀",
-	Callback = function()
-		local Settings = {
-  JoinTeam = "Pirates"; -- Pirates/Marines
-  Translator = true; -- true/false
-}
-getgenv().BETA_VERSION = true
-loadstring(game:HttpGet("https://raw.githubusercontent.com/tlredz/Scripts/refs/heads/main/main.luau"))(Settings)-- 👈 link khác
-	end
-})
-
-Tabs.Main2:AddButton({
-	Title = "Dat Thg",
-	Description = "fl tiktok để biết thêm nhiều script",
-	Callback = function()
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/LuaCrack/DatThg/refs/heads/main/DatThgV2"))()
-	end
-})
-
-------------------------------------------------
--- TAB 2: Ví dụ thêm script
-------------------------------------------------
-Tabs.Main1:AddButton({
-	Title = "Banana Hub đang update",                             -- 👈 tên nút hiển thị
-	Description = "script này ngon á đủ chức năng cả😃",-- 👈 mô tả
-	Callback = function()
-		local Settings = {
-			JoinTeam = "Pirates";   -- 👈 team mặc định: Pirates hoặc Marines
-			Translator = true;      -- 👈 bật dịch sang tiếng Việt nếu có
-		}
-		 -- 👈 link script tải
-	end
-})
