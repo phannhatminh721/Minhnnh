@@ -1,0 +1,34 @@
+-- Local Fly Script (Educational Use Only)
+
+local UserInputService = game:GetService("UserInputService")
+local Players = game:GetService("Players")
+
+local player = Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+
+local flying = false
+local speed = 50
+
+function Fly()
+	flying = true
+	while flying do
+		humanoidRootPart.Velocity = humanoidRootPart.CFrame.LookVector * speed
+		task.wait()
+	end
+end
+
+function StopFly()
+	flying = false
+	humanoidRootPart.Velocity = Vector3.new(0,0,0)
+end
+
+UserInputService.InputBegan:Connect(function(input)
+	if input.KeyCode == Enum.KeyCode.F then
+		if flying then
+			StopFly()
+		else
+			Fly()
+		end
+	end
+end)
